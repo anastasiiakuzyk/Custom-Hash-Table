@@ -7,16 +7,21 @@ public class HashTable<K, V> {
     //constant for hashing
     private final double A = 0.56;
 
-    private int numBuckets = 100; //buckets can repeat
+    private int numBuckets; //buckets can repeat
 
     //amount of
     private int size = 0;
 
     //memory allocation for nodes
-    public HashTable() {
+    public HashTable(int numBuckets) {
+        this.numBuckets = numBuckets;
         for (int i = 0; i < numBuckets; i++) {
             bucketArray.add(new ArrayList<>());
         }
+    }
+    //memory allocation for nodes
+    public HashTable() {
+        this(10);
     }
 
     public int size() {
@@ -29,7 +34,7 @@ public class HashTable<K, V> {
 
     private int getHashCode(K key) {
         int hashCode = key.hashCode();
-        int index = (int) Math.floor((hashCode * A % numBuckets)); //closest index
+        int index = (int) Math.floor((hashCode * A % 1)) * numBuckets; //closest index
         if (index < 0) {
             index = index * -1;
         }
@@ -62,6 +67,18 @@ public class HashTable<K, V> {
         }
 
         return null;
+    }
+
+    public void getAll() {
+        for (ArrayList<HashNode<K, V>> hashNodes : bucketArray) {
+            for (HashNode<K, V> next : hashNodes) {
+                if (next != null) {
+                    K key = next.key;
+                    V value = next.value;
+                    System.out.println(key + "`s birthday is " + value);
+                }
+            }
+        }
     }
 
     public void add(K key, V value) {
